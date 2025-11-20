@@ -1,7 +1,3 @@
-Here is the updated README with the Apache 2.0 License and developer attribution added.
-
-***
-
 # Graphite-Phlow
 
 <div align="center">
