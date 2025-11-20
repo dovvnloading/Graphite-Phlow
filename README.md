@@ -2,6 +2,12 @@
 
 <div align="center">
 
+[![Status](https://img.shields.io/badge/Live_on_GitHub_Pages-2EA44F?style=for-the-badge&logo=github&logoColor=white)](https://dovvnloading.github.io/Graphite-Phlow/)
+
+</div>
+
+<div align="center">
+
 
 
 
