@@ -1,21 +1,20 @@
+Here is the updated README with the Apache 2.0 License and developer attribution added.
 
+***
 
 # Graphite-Phlow
 
 <div align="center">
 
-
+<img src="https://github.com/user-attachments/assets/cb99a74c-518d-4250-929d-4c4ff4ca1c72" alt="Graphite-Phlow Interface" width="100%" />
 
 <br />
 
-![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+![License](https://img.shields.io/badge/license-Apache_2.0-blue?style=flat-square)
 ![Version](https://img.shields.io/badge/version-1.0.0-lightgrey?style=flat-square)
 ![Status](https://img.shields.io/badge/status-active-success?style=flat-square)
 ![Tech](https://img.shields.io/badge/react-v19-black?style=flat-square)
 ![AI](https://img.shields.io/badge/Google-Gemini_3_Pro-blue?style=flat-square)
-
-
-<img src="https://github.com/user-attachments/assets/cb99a74c-518d-4250-929d-4c4ff4ca1c72" alt="Graphite-Phlow Interface" width="100%" />
 
 </div>
 
@@ -33,7 +32,7 @@ Built with React, Tailwind CSS, and the Google GenAI SDK, Graphite-Phlow leverag
 4. [Getting Started](#getting-started)
 5. [Usage Guide](#usage-guide)
 6. [Contributing](#contributing)
-7. [License](#license)
+7. [License & Authors](#license--authors)
 
 ---
 
@@ -157,6 +156,14 @@ Contributions are welcome. Please follow the standard fork-and-pull request work
 
 ---
 
-## License
+## License & Authors
 
-Distributed under the MIT License. See `LICENSE` for more information.
+**Graphite-Phlow**
+
+Copyright © 2025 **Matthew Robert Wesney**.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
