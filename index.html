@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphite-Phlow | AI-Powered Agentic IDE</title>
+    <meta name="description" content="Next-generation AI coding IDE by Matthew Robert Wesney.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Palette */
+            --bg-dark: #121112;
+            --text-main: #DADED5;
+            --text-muted: #89A7C3;
+            --panel-bg: #1F213A; /* Used for deep contrast elements */
+            --accent-purple: #9435E9;
+            --accent-grey: #423C4C;
+            --accent-blue: #127DC1;
+            --accent-gold: #BF8931;
+            
+            /* Neumorphism Variables */
+            --shadow-light: rgba(66, 60, 76, 0.15); 
+            --shadow-dark: rgba(0, 0, 0, 0.8);
+            --radius-main: 24px;
+            --radius-small: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        code, pre, .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .text-purple { color: var(--accent-purple); }
+        .text-blue { color: var(--accent-blue); }
+        .text-gold { color: var(--accent-gold); }
+        .text-muted { color: var(--text-muted); }
+
+        /* Neumorphic Components */
+        .neu-box {
+            background: var(--bg-dark);
+            border-radius: var(--radius-main);
+            box-shadow: 
+                12px 12px 24px var(--shadow-dark), 
+                -12px -12px 24px var(--shadow-light);
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .neu-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--text-main);
+            background: var(--bg-dark);
+            box-shadow: 
+                6px 6px 12px var(--shadow-dark), 
+                -6px -6px 12px var(--shadow-light);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .neu-btn:hover {
+            transform: translateY(-2px);
+            color: var(--accent-purple);
+            box-shadow: 
+                8px 8px 16px var(--shadow-dark), 
+                -8px -8px 16px var(--shadow-light);
+        }
+
+        .neu-btn:active {
+            transform: translateY(0);
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark), 
+                inset -4px -4px 8px var(--shadow-light);
+        }
+
+        .neu-btn.primary {
+            color: var(--accent-purple);
+            border: 1px solid rgba(148, 53, 233, 0.1);
+        }
+
+        /* Header / Nav */
+        header {
+            padding: 30px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(18, 17, 18, 0.85);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i { color: var(--accent-purple); }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background decorative glow */
+        .glow-bg {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(148,53,233,0.15) 0%, rgba(18,17,18,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #DADED5 0%, #89A7C3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--bg-dark);
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono';
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .badge.active { border-left: 3px solid #00ff9d; }
+        .badge.ai { border-left: 3px solid var(--accent-purple); }
+        .badge.version { border-left: 3px solid var(--accent-blue); }
+
+        /* Screenshots Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin: 80px 0;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            position: relative;
+            padding: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 14px;
+            display: block;
+            opacity: 0.8;
+            transition: 0.5s;
+            /* Create an inner bevel effect via box-shadow on container, or just simple filter */
+        }
+
+        .gallery-item:hover img {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        /* Sections General */
+        section { padding: 80px 0; }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-purple);
+            margin: 10px auto 0;
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent-purple);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+            text-shadow: 0 0 15px rgba(18, 125, 193, 0.4);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .feature-card li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-card li::before {
+            content: '▹';
+            color: var(--accent-purple);
+            margin-right: 10px;
+        }
+
+        /* Agentic Workflow */
+        .agent-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .agent-row {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .agent-card {
+            flex: 1;
+            padding: 30px;
+            position: relative;
+            border-left: 4px solid var(--accent-grey);
+        }
+
+        .agent-card.pm { border-color: var(--accent-purple); }
+        .agent-card.arch { border-color: var(--accent-blue); }
+        .agent-card.lead { border-color: var(--accent-gold); }
+        .agent-card.dev { border-color: var(--text-main); }
+
+        .agent-role {
+            font-family: 'JetBrains Mono';
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+            opacity: 0.7;
+        }
+
+        /* Architecture Table Replacement */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .tech-item {
+            padding: 20px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+
+        .tech-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .tech-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 100px;
+            padding: 60px 0;
+            background: #0d0c0d;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            margin: 0 15px;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+        
+        .footer-links a:hover { color: var(--accent-purple); }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--accent-grey);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .gallery { grid-template-columns: 1fr; }
+            .agent-row { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <div class="container nav-content">
+            <div class="logo">
+                <i class="fa-solid fa-layer-group"></i> Graphite-Phlow
+            </div>
+            <a href="https://github.com/dovvnloading/Graphite-Phlow" class="neu-btn">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="glow-bg"></div>
+        <div class="container">
+            <div class="badges">
+                <div class="badge version">v1.0.0</div>
+                <div class="badge active">Status: Active</div>
+                <div class="badge ai">Gemini 3 Pro</div>
+                <div class="badge">React v19</div>
+            </div>
+            <h1>Bridge Concept to Code.</h1>
+            <p>
+                A next-generation, AI-powered coding IDE. Orchestrate a full software development team with 
+                <strong>Agentic Build Mode</strong> to turn natural language into executable reality.
+            </p>
+            
+            <div style="margin-top: 40px;">
+                <a href="#get-started" class="neu-btn primary">
+                    <i class="fa-solid fa-bolt"></i> Get Started
+                </a>
+                <a href="#features" class="neu-btn" style="margin-left: 15px;">
+                    <i class="fa-solid fa-eye"></i> View Features
+                </a>
+            </div>
+
+            <!-- Image Gallery Grid -->
+            <div class="gallery">
+                <div class="gallery-item neu-box">
+                    <img src="https://github.com/user-attachments/assets/4037328b-5fb4-4af4-b8d1-800ca26c74b0" alt="Graphite Phlow UI 1">
+                </div>
+                <div class="gallery-item neu-box">
+                    <img src="https://github.com/user-attachments/assets/a4da0a80-cd8a-45e9-a20d-80dd2a4a23bb" alt="Graphite Phlow UI 2">
+                </div>
+                <div class="gallery-item neu-box">
+                    <img src="https://github.com/user-attachments/assets/85ac388e-0f9c-456c-9f78-fb710bfca851" alt="Graphite Phlow UI 3">
+                </div>
+                <div class="gallery-item neu-box">
+                    <img src="https://github.com/user-attachments/assets/2913a456-8a12-42a5-8e38-1c4ea0ab112f" alt="Graphite Phlow UI 4">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">Core Capabilities</h2>
+            <div class="features-grid">
+                
+                <!-- AI Modes -->
+                <div class="feature-card neu-box">
+                    <i class="fa-solid fa-brain feature-icon"></i>
+                    <h3>Advanced AI Modes</h3>
+                    <p class="text-muted">Powered by Google GenAI SDK tailored for coding logic.</p>
+                    <ul>
+                        <li><strong>Quick Mode:</strong> Gemini 2.5 Flash for instant edits.</li>
+                        <li><strong>Deep Think:</strong> Gemini 3 Pro with architectural reasoning budgets.</li>
+                        <li><strong>Web Grounding:</strong> Real-time documentation fetching via Google Search.</li>
+                        <li><strong>Semantic Search:</strong> Query your active codebase instantly.</li>
+                    </ul>
+                </div>
+
+                <!-- Code Canvas -->
+                <div class="feature-card neu-box">
+                    <i class="fa-solid fa-code feature-icon" style="color: var(--accent-purple)"></i>
+                    <h3>Powerful Code Canvas</h3>
+                    <p class="text-muted">A robust editor environment built for modern development.</p>
+                    <ul>
+                        <li><strong>Multi-Tab Editor:</strong> Syntax highlighting for TS, Py, HTML, CSS.</li>
+                        <li><strong>Live Preview:</strong> Instant interactive preview with responsive testing tools.</li>
+                        <li><strong>Bug Repair Panel:</strong> Dedicated error analysis workspace.</li>
+                        <li><strong>Smart Context:</strong> Right-click AI actions (Explain, Test, Refactor).</li>
+                    </ul>
+                </div>
+
+                <!-- DX -->
+                <div class="feature-card neu-box">
+                    <i class="fa-solid fa-wand-magic-sparkles feature-icon" style="color: var(--accent-gold)"></i>
+                    <h3>Developer Experience</h3>
+                    <p class="text-muted">Seamlessly integrated into your existing workflow.</p>
+                    <ul>
+                        <li><strong>GitHub Import:</strong> Load public repos directly.</li>
+                        <li><strong>Local Management:</strong> Browser storage project states.</li>
+                        <li><strong>Visual Diffing:</strong> AI changes presented as clear diffs.</li>
+                        <li><strong>Floating Toolbar:</strong> Context-aware tools at your cursor.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Agentic Mode Section -->
+    <section style="background: linear-gradient(to bottom, var(--bg-dark), #151415);">
+        <div class="container">
+            <h2 class="section-title">Agentic Build Mode</h2>
+            <p class="text-muted" style="text-align: center; margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                You act as the stakeholder. Four specialized AI agents collaborate to build your vision, requiring your approval at every critical phase.
+            </p>
+
+            <div class="agent-flow">
+                <div class="agent-row">
+                    <div class="agent-card neu-box pm">
+                        <span class="agent-role text-purple">Product Manager</span>
+                        <h3>Concept & Strategy</h3>
+                        <p class="text-muted">Refines high-level prompts into concrete product strategy, user flows, and core feature lists.</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-down fa-xl text-muted"></i>
+                </div>
+
+                <div class="agent-row">
+                    <div class="agent-card neu-box arch">
+                        <span class="agent-role text-blue">System Architect</span>
+                        <h3>Stack & Structure</h3>
+                        <p class="text-muted">Designs the system, selects the tech stack, defines data models, and structures file hierarchy.</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-down fa-xl text-muted"></i>
+                </div>
+
+                <div class="agent-row">
+                    <div class="agent-card neu-box lead">
+                        <span class="agent-role text-gold">Tech Lead</span>
+                        <h3>Roadmap & Planning</h3>
+                        <p class="text-muted">Creates a detailed, step-by-step implementation roadmap for the developers to follow.</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-down fa-xl text-muted"></i>
+                </div>
+
+                <div class="agent-row">
+                    <div class="agent-card neu-box dev">
+                        <span class="agent-role">Developer</span>
+                        <h3>Execution</h3>
+                        <p class="text-muted">Writes the actual code based on the approved plan, maintaining context of the entire architecture.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture / Tech Stack -->
+    <section>
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <div class="tech-stack">
+                <div class="tech-item neu-box">
+                    <div class="tech-name">React 19 + Vite</div>
+                    <div class="tech-desc">Frontend Framework</div>
+                </div>
+                <div class="tech-item neu-box">
+                    <div class="tech-name">Tailwind CSS</div>
+                    <div class="tech-desc">Utility-First Styling</div>
+                </div>
+                <div class="tech-item neu-box">
+                    <div class="tech-name text-blue">Google GenAI SDK</div>
+                    <div class="tech-desc">Direct Browser-to-API</div>
+                </div>
+                <div class="tech-item neu-box">
+                    <div class="tech-name">PrismJS</div>
+                    <div class="tech-desc">Syntax Highlighting</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section id="get-started">
+        <div class="container">
+            <div class="neu-box" style="padding: 60px; text-align: center;">
+                <h2 style="margin-bottom: 20px;">Ready to flow?</h2>
+                <p class="text-muted" style="margin-bottom: 40px;">
+                    Clone the repository and set up your Gemini API key to start building with your AI team.
+                </p>
+                
+                <div style="background: #000; padding: 20px; border-radius: 12px; display: inline-block; text-align: left; margin-bottom: 30px; border: 1px solid #333;">
+                    <code style="color: #00ff9d;">git clone https://github.com/dovvnloading/graphite-phlow.git</code><br>
+                    <code style="color: #00ff9d;">cd graphite-phlow</code><br>
+                    <code style="color: #00ff9d;">npm install && npm run dev</code>
+                </div>
+                <br>
+                <a href="https://github.com/dovvnloading/Graphite-Phlow" class="neu-btn primary">
+                    View on GitHub <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="https://github.com/dovvnloading/Graphite-Phlow"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+            <p class="copyright">
+                &copy; 2025 Matthew Robert Wesney.<br>
+                Released under the Apache 2.0 License.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
