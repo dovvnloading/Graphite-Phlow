@@ -2,7 +2,8 @@
 
 <div align="center">
 
-<img src="https://github.com/user-attachments/assets/cb99a74c-518d-4250-929d-4c4ff4ca1c72" alt="Graphite-Phlow Interface" width="100%" />
+
+
 
 <br />
 
@@ -17,6 +18,13 @@
 **Graphite-Phlow** is a next-generation, AI-powered coding IDE designed to bridge the gap between natural language concepts and executable code. It features a sophisticated **Agentic Build Mode** that simulates a full software development team—orchestrating a step-by-step, user-approved build process.
 
 Built with React, Tailwind CSS, and the Google GenAI SDK, Graphite-Phlow leverages the latest Gemini models to provide deep reasoning, real-time web grounding, and semantic code search.
+
+
+| | |
+|---|---|
+| <img src="https://github.com/user-attachments/assets/4037328b-5fb4-4af4-b8d1-800ca26c74b0" width="100%" /> | <img src="https://github.com/user-attachments/assets/a4da0a80-cd8a-45e9-a20d-80dd2a4a23bb" width="100%" /> |
+| <img src="https://github.com/user-attachments/assets/85ac388e-0f9c-456c-9f78-fb710bfca851" width="100%" /> | <img src="https://github.com/user-attachments/assets/2913a456-8a12-42a5-8e38-1c4ea0ab112f" width="100%" /> |
+
 
 ---
 
